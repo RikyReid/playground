@@ -1,0 +1,6 @@
+ curl -X POST \
+ -H "Content-Type: application/json" \
+ -d '{"createdById": 1, "assigneeId": 2, "name" :"Task 2"}' \
+ http://localhost:8080/v1/tasks
+
+curl -X GET http://localhost:8080/v1/tasks/2
