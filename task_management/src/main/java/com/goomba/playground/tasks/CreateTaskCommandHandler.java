@@ -8,11 +8,14 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 class CreateTaskCommandHandler implements CommandHandler<CreateTaskCommand, TaskDO> {
     private final TaskRepository taskRepository;
+    private final UserRepository userRepository;
     private final ApplicationEventPublisher eventPublisher;
 
     CreateTaskCommandHandler(TaskRepository taskRepository,
+                             UserRepository userRepository,
                              ApplicationEventPublisher eventPublisher) {
         this.taskRepository = taskRepository;
+        this.userRepository = userRepository;
         this.eventPublisher = eventPublisher;
     }
 
@@ -27,7 +30,8 @@ class CreateTaskCommandHandler implements CommandHandler<CreateTaskCommand, Task
     }
 
     private Task createTask(CreateTaskCommand createTaskCommand) {
-        var task = Task.from(createTaskCommand);
+        var values = values(createTaskCommand);
+        var task = Task.from(values);
         return taskRepository.save(task);
     }
 
@@ -35,6 +39,18 @@ class CreateTaskCommandHandler implements CommandHandler<CreateTaskCommand, Task
         if (taskRepository.existsByName(createTaskCommand.name())) {
             throw new ExistingNameException();
         }
+    }
+
+    private CreateTaskValues values(CreateTaskCommand command) {
+        var assignee = findUser(command.assigneeId());
+        return new CreateTaskValues(command.createdById(),
+                assignee,
+                command.name());
+    }
+
+    private User findUser(long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(UserNotFoundException::new);
     }
 
     private void publishEvent(TaskDO taskDO) {

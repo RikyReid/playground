@@ -1,9 +1,10 @@
 package com.goomba.playground.tasks.events;
 
 import com.goomba.playground.tasks.TaskDO;
+import com.goomba.playground.tasks.UserDO;
 
-public record CreatedTaskEvent(long id, long createdById, long assigneeId, String name) implements TaskEvent {
+public record CreatedTaskEvent(long id, long createdById, UserDO assignee, String name) implements TaskEvent {
     public CreatedTaskEvent(TaskDO taskDO) {
-        this(taskDO.id(), taskDO.createdById(), taskDO.assigneeId(), taskDO.name());
+        this(taskDO.id(), taskDO.createdById(), taskDO.assignee(), taskDO.name());
     }
 }

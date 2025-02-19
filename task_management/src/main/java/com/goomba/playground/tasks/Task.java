@@ -1,9 +1,6 @@
 package com.goomba.playground.tasks;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class Task {
@@ -11,7 +8,10 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private long createdById;
-    private long assigneeId;
+
+    @ManyToOne
+    private User assignee;
+
     private String name;
 
     long id() {
@@ -22,24 +22,24 @@ public class Task {
         return this.createdById;
     }
 
-    long assigneeId() {
-        return this.assigneeId;
+    User assignee() {
+        return this.assignee;
     }
 
     String name() {
         return name;
     }
 
-    Task reassignTask(long assigneeId) {
-        this.assigneeId = assigneeId;
+    Task reassignTask(User assignee) {
+        this.assignee = assignee;
         return this;
     }
 
-    static Task from(CreateTaskCommand createTaskCommand) {
+    static Task from(CreateTaskValues createTaskValues) {
         var task = new Task();
-        task.assigneeId = createTaskCommand.assigneeId();
-        task.createdById = createTaskCommand.createdById();
-        task.name = createTaskCommand.name();
+        task.assignee = createTaskValues.assignee();
+        task.createdById = createTaskValues.createdById();
+        task.name = createTaskValues.name();
         return task;
     }
 }

@@ -28,8 +28,10 @@ class TaskController {
         return createTaskCommandHandler.process(command);
     }
 
-    @PutMapping("/reassign")
-    TaskDO reassignTask(@RequestBody ReassignTaskCommand command) {
+    @PutMapping("/{taskId}/reassign")
+    TaskDO reassignTask(@PathVariable("taskId") long taskId,
+                        @RequestParam("assigneeId") long assignId) {
+        var command = new ReassignTaskCommand(taskId, assignId);
         return reassignTaskCommandHandler.process(command);
 
     }

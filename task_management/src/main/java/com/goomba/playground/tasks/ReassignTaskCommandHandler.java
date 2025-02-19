@@ -25,7 +25,6 @@ public class ReassignTaskCommandHandler implements CommandHandler<ReassignTaskCo
     public TaskDO process(ReassignTaskCommand command) {
         validateUserExists(command.assigneeId());
         var task = reassignTask(command);
-
         var taskDO = new TaskDO(task);
         publishEvent(taskDO);
         return taskDO;
@@ -40,7 +39,13 @@ public class ReassignTaskCommandHandler implements CommandHandler<ReassignTaskCo
     private Task reassignTask(ReassignTaskCommand command) {
         var task = taskRepository.findById(command.taskId())
                 .orElseThrow(ResourceNotFoundException::new);
-        return task.reassignTask(command.assigneeId());
+        var assignee = findUser(command.assigneeId());
+        return task.reassignTask(assignee);
+    }
+
+    private User findUser(long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(UserNotFoundException::new);
     }
 
     private void publishEvent(TaskDO taskDO) {

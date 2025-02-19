@@ -15,10 +15,11 @@ class CommandLineRunner implements org.springframework.boot.CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        var unassigned = addUser("Unassigned");
         var mario = addUser("Mario");
         var luigi = addUser("Luigi");
-        addTask(1, 2, "Task 1");
-        addTask(2, 1, "Task 2");
+        addTask(2, 3, "Task 1");
+        addTask(3, 2, "Task 2");
     }
 
     private void addTask(long createdById, long assigneeId, String name) {
