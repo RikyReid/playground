@@ -1,6 +1,6 @@
 package com.goomba.playground.tasks;
 
-import com.goomba.playground.EventPublisher;
+import com.goomba.playground.tasks.events.CreatedTaskEvent;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
@@ -36,7 +36,7 @@ class CreateTaskCommandHandler implements CommandHandler<CreateTaskCommand, Task
     }
 
     private void publishEvent(TaskDO taskDO) {
-        var event = new CreateTaskEvent(taskDO);
+        var event = new CreatedTaskEvent(taskDO);
         eventPublisher.publishEvent(event);
     }
 }
