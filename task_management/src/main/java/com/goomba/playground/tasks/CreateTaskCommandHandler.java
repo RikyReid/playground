@@ -3,6 +3,7 @@ package com.goomba.playground.tasks;
 import com.goomba.playground.tasks.events.CreatedTaskEvent;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 class CreateTaskCommandHandler implements CommandHandler<CreateTaskCommand, TaskDO> {
@@ -15,6 +16,7 @@ class CreateTaskCommandHandler implements CommandHandler<CreateTaskCommand, Task
         this.eventPublisher = eventPublisher;
     }
 
+    @Transactional
     @Override
     public TaskDO process(CreateTaskCommand createTaskCommand) {
         validateName(createTaskCommand);

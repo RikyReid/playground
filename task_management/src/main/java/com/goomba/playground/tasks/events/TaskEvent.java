@@ -1,4 +1,4 @@
 package com.goomba.playground.tasks.events;
 
-public sealed interface TaskEvent permits CreatedTaskEvent {
+public sealed interface TaskEvent permits CreatedTaskEvent, ReassignedTaskEvent {
 }

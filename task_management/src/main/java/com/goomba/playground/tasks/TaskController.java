@@ -8,11 +8,14 @@ import org.springframework.web.bind.annotation.*;
 class TaskController {
     private final CreateTaskCommandHandler createTaskCommandHandler;
     private final FindTaskRequestHandler findTaskHandler;
+    private final ReassignTaskCommandHandler reassignTaskCommandHandler;
 
     TaskController(CreateTaskCommandHandler createTaskCommandHandler,
-                   FindTaskRequestHandler findTaskHandler) {
+                   FindTaskRequestHandler findTaskHandler,
+                   ReassignTaskCommandHandler reassignTaskCommandHandler) {
         this.createTaskCommandHandler = createTaskCommandHandler;
         this.findTaskHandler = findTaskHandler;
+        this.reassignTaskCommandHandler = reassignTaskCommandHandler;
     }
 
     @GetMapping("/{taskId}")
@@ -23,5 +26,11 @@ class TaskController {
     @PostMapping
     TaskDO createTask(@Validated @RequestBody CreateTaskCommand command) {
         return createTaskCommandHandler.process(command);
+    }
+
+    @PutMapping("/reassign")
+    TaskDO reassignTask(@RequestBody ReassignTaskCommand command) {
+        return reassignTaskCommandHandler.process(command);
+
     }
 }

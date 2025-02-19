@@ -14,20 +14,25 @@ public class Task {
     private long assigneeId;
     private String name;
 
-    public long id() {
+    long id() {
         return id;
     }
 
-    public long createdById() {
+    long createdById() {
         return this.createdById;
     }
 
-    public long assigneeId() {
+    long assigneeId() {
         return this.assigneeId;
     }
 
-    public String name() {
+    String name() {
         return name;
+    }
+
+    Task reassignTask(long assigneeId) {
+        this.assigneeId = assigneeId;
+        return this;
     }
 
     static Task from(CreateTaskCommand createTaskCommand) {
