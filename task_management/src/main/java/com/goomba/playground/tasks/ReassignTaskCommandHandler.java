@@ -1,13 +1,13 @@
 package com.goomba.playground.tasks;
 
-import com.goomba.playground.tasks.events.CreatedTaskEvent;
+import com.goomba.playground.CommandHandler;
 import com.goomba.playground.tasks.events.ReassignedTaskEvent;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 @Component
-public class ReassignTaskCommandHandler implements CommandHandler<ReassignTaskCommand, TaskDO>{
+public class ReassignTaskCommandHandler implements CommandHandler<ReassignTaskCommand, TaskDO> {
     private final TaskRepository taskRepository;
     private final UserRepository userRepository;
     private final ApplicationEventPublisher eventPublisher;
@@ -43,7 +43,7 @@ public class ReassignTaskCommandHandler implements CommandHandler<ReassignTaskCo
         return task.reassignTask(assignee);
     }
 
-    private User findUser(long userId) {
+    private TaskUser findUser(long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
     }

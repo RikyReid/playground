@@ -1,17 +1,18 @@
-package com.goomba.playground.tasks;
+package com.goomba.playground.usermanagement;
 
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "task_user")
+@Table(name = "app_user")
 class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String name;
+    private String email;
 
-    long id() {
+    Long id() {
         return id;
     }
 
@@ -19,9 +20,14 @@ class User {
         return name;
     }
 
-    static User from(String name) {
+    String email() {
+        return email;
+    }
+
+    static User from(String name, String email) {
         var user = new User();
         user.name = name;
+        user.email = email;
         return user;
     }
 }

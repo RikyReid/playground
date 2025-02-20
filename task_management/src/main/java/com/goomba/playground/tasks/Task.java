@@ -10,7 +10,7 @@ public class Task {
     private long createdById;
 
     @ManyToOne
-    private User assignee;
+    private TaskUser assignee;
 
     private String name;
 
@@ -22,7 +22,7 @@ public class Task {
         return this.createdById;
     }
 
-    User assignee() {
+    TaskUser assignee() {
         return this.assignee;
     }
 
@@ -30,7 +30,7 @@ public class Task {
         return name;
     }
 
-    Task reassignTask(User assignee) {
+    Task reassignTask(TaskUser assignee) {
         this.assignee = assignee;
         return this;
     }

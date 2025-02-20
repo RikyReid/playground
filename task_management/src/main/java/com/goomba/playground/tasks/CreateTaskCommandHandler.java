@@ -1,12 +1,13 @@
 package com.goomba.playground.tasks;
 
+import com.goomba.playground.CommandHandler;
 import com.goomba.playground.tasks.events.CreatedTaskEvent;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 @Component
-class CreateTaskCommandHandler implements CommandHandler<CreateTaskCommand, TaskDO> {
+public class CreateTaskCommandHandler implements CommandHandler<CreateTaskCommand, TaskDO> {
     private final TaskRepository taskRepository;
     private final UserRepository userRepository;
     private final ApplicationEventPublisher eventPublisher;
@@ -48,7 +49,7 @@ class CreateTaskCommandHandler implements CommandHandler<CreateTaskCommand, Task
                 command.name());
     }
 
-    private User findUser(long userId) {
+    private TaskUser findUser(long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
     }

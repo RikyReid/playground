@@ -1,4 +1,4 @@
 package com.goomba.playground.tasks;
 
-public record CreateTaskValues(long createdById, User assignee, String name) {
+public record CreateTaskValues(long createdById, TaskUser assignee, String name) {
 }

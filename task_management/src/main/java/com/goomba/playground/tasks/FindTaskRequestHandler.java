@@ -1,5 +1,6 @@
 package com.goomba.playground.tasks;
 
+import com.goomba.playground.CommandHandler;
 import org.springframework.stereotype.Component;
 
 @Component

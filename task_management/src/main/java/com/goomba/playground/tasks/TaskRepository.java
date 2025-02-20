@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface TaskRepository extends JpaRepository<Task, Long> {
     @Query("""
             SELECT new com.goomba.playground.tasks.TaskDO(t.id, t.createdById,
-            new com.goomba.playground.tasks.UserDO(u.id, u.name), t.name)
+            new com.goomba.playground.tasks.TaskUserDO(u.id, u.name), t.name)
             FROM Task t JOIN t.assignee u WHERE t.id = :id
             """)
     Optional<TaskDO> findTaskById(long id);
