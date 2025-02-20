@@ -7,7 +7,9 @@ public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    private long createdById;
+
+    @ManyToOne
+    private TaskUser createdBy;
 
     @ManyToOne
     private TaskUser assignee;
@@ -18,8 +20,8 @@ public class Task {
         return id;
     }
 
-    long createdById() {
-        return this.createdById;
+    TaskUser createdBy() {
+        return this.createdBy;
     }
 
     TaskUser assignee() {
@@ -38,7 +40,7 @@ public class Task {
     static Task from(CreateTaskValues createTaskValues) {
         var task = new Task();
         task.assignee = createTaskValues.assignee();
-        task.createdById = createTaskValues.createdById();
+        task.createdBy = createTaskValues.createdBy();
         task.name = createTaskValues.name();
         return task;
     }

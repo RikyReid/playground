@@ -44,9 +44,8 @@ public class CreateTaskCommandHandler implements CommandHandler<CreateTaskComman
 
     private CreateTaskValues values(CreateTaskCommand command) {
         var assignee = findUser(command.assigneeId());
-        return new CreateTaskValues(command.createdById(),
-                assignee,
-                command.name());
+        var createdBy = findUser(command.createdById());
+        return new CreateTaskValues(createdBy, assignee, command.name());
     }
 
     private TaskUser findUser(long userId) {
