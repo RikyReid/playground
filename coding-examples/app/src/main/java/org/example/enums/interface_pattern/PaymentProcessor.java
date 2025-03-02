@@ -5,6 +5,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static org.example.enums.interface_pattern.ModernPaymentMethod.CRYPTO;
+
 public class PaymentProcessor {
     private static final Set<PaymentMethod> ACCEPTED_METHODS;
 
@@ -26,7 +28,7 @@ public class PaymentProcessor {
     public static String getReceiptNote(PaymentMethod method) {
         return switch(method) {
             case BasicMethodPayment.CREDIT_CARD -> "Charged to card";
-            case ModernPaymentMethod.CRYPTO -> "Blockchain confirmed";
+            case CRYPTO -> "Blockchain confirmed";
             case CustomPaymentMethod.GIFT_CARD -> "Redeemed gift";
             default -> throw new IllegalStateException("Unexpected value: " + method);
         };
@@ -34,9 +36,9 @@ public class PaymentProcessor {
 
     public static void main(String[] args) {
         PaymentProcessor.process(BasicMethodPayment.CREDIT_CARD);
-        PaymentProcessor.process(ModernPaymentMethod.CRYPTO);
+        PaymentProcessor.process(CRYPTO);
 
-        var receiptNote = PaymentProcessor.getReceiptNote(ModernPaymentMethod.CRYPTO);
+        var receiptNote = PaymentProcessor.getReceiptNote(CRYPTO);
         System.out.println(receiptNote);
     }
 }
