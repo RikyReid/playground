@@ -1,7 +1,7 @@
 package com.goomba.playground;
 
-import com.goomba.playground.tasks.CreateTaskCommand;
-import com.goomba.playground.tasks.CreateTaskCommandHandler;
+import com.goomba.playground.tasks.application.createtask.CreateTaskCommand;
+import com.goomba.playground.tasks.application.createtask.CreateTaskCommandHandler;
 import com.goomba.playground.usermanagement.SimpleCreateUserHandler;
 import org.springframework.stereotype.Component;
 

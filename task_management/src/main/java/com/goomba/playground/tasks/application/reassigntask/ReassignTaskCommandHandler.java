@@ -1,0 +1,62 @@
+package com.goomba.playground.tasks.application.reassigntask;
+
+import com.goomba.playground.CommandHandler;
+import com.goomba.playground.tasks.application.ResourceNotFoundException;
+import com.goomba.playground.tasks.application.TaskDO;
+import com.goomba.playground.tasks.application.UserNotFoundException;
+import com.goomba.playground.tasks.infrastructure.persistence.TaskRepository;
+import com.goomba.playground.tasks.infrastructure.persistence.UserRepository;
+import com.goomba.playground.tasks.domain.model.Task;
+import com.goomba.playground.tasks.domain.model.TaskUser;
+import com.goomba.playground.tasks.events.ReassignedTaskEvent;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+@Component
+public class ReassignTaskCommandHandler implements CommandHandler<ReassignTaskCommand, TaskDO> {
+    private final TaskRepository taskRepository;
+    private final UserRepository userRepository;
+    private final ApplicationEventPublisher eventPublisher;
+
+    ReassignTaskCommandHandler(TaskRepository taskRepository,
+                               UserRepository userRepository,
+                               ApplicationEventPublisher eventPublisher) {
+        this.taskRepository = taskRepository;
+        this.userRepository = userRepository;
+        this.eventPublisher = eventPublisher;
+    }
+
+    @Transactional
+    @Override
+    public TaskDO process(ReassignTaskCommand command) {
+        validateUserExists(command.assigneeId());
+        var task = reassignTask(command);
+        var taskDO = new TaskDO(task);
+        publishEvent(taskDO);
+        return taskDO;
+    }
+
+    private void validateUserExists(long id) {
+        if (!userRepository.existsById(id)) {
+            throw new UserNotFoundException();
+        }
+    }
+
+    private Task reassignTask(ReassignTaskCommand command) {
+        var task = taskRepository.findById(command.taskId())
+                .orElseThrow(ResourceNotFoundException::new);
+        var assignee = findUser(command.assigneeId());
+        return task.reassignTask(assignee);
+    }
+
+    private TaskUser findUser(long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(UserNotFoundException::new);
+    }
+
+    private void publishEvent(TaskDO taskDO) {
+        var event = new ReassignedTaskEvent(taskDO);
+        eventPublisher.publishEvent(event);
+    }
+}
